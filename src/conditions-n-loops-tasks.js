@@ -433,8 +433,19 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const N = matrix.length;
+  const a = matrix;
+  for (let i = 0; i < parseInt(N / 2, 10); i += 1) {
+    for (let j = i; j < N - i - 1; j += 1) {
+      const temp = a[i][j];
+      a[i][j] = a[N - 1 - j][i];
+      a[N - 1 - j][i] = a[N - 1 - i][N - 1 - j];
+      a[N - 1 - i][N - 1 - j] = a[j][N - 1 - i];
+      a[j][N - 1 - i] = temp;
+    }
+  }
+  return a;
 }
 
 /**
@@ -451,8 +462,29 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const sorted = arr;
+  const arrLength = arr.length;
+  if (arrLength <= 1) return arr;
+
+  const pivot = arr[0];
+  let left = [];
+  let right = [];
+  for (let i = 1; i < arrLength; i += 1) {
+    if (arr[i] < pivot) {
+      left[left.length] = arr[i];
+    } else {
+      right[right.length] = arr[i];
+    }
+  }
+
+  left = sortByAsc(left);
+  right = sortByAsc(right);
+  const result = [...left, pivot, ...right];
+  for (let i = 0; i < result.length; i += 1) {
+    sorted[i] = result[i];
+  }
+  return sorted;
 }
 
 /**
@@ -472,8 +504,19 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  for (let i = 1; i <= iterations; i += 1) {
+    let left = '';
+    let right = '';
+    for (let j = 0; j < str.length; j += 1) {
+      if (j % 2 === 0) left += result[j];
+      else right += result[j];
+    }
+    result = left + right;
+    if (result === str) return shuffleChar(str, iterations % i);
+  }
+  return result;
 }
 
 /**
